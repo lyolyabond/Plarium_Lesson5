@@ -38,7 +38,7 @@ namespace TaskB
         {
             //Создание массива объектов
             AbstractClass.Vegetable[] arrayOfVegetables = new AbstractClass.Vegetable[] { tomato, cucumber, pepper, cabbage, onion };
-            object temp;
+            AbstractClass.Vegetable temp;
             //Пузырькова сортировка объектов по значению Calories
             for (int i = 0; i < arrayOfVegetables.Length - 1; i++)
             {
@@ -48,7 +48,7 @@ namespace TaskB
                     {
                         temp = arrayOfVegetables[i];
                         arrayOfVegetables[i] = arrayOfVegetables[j];
-                        arrayOfVegetables[j] = (AbstractClass.Vegetable)temp;
+                        arrayOfVegetables[j] = temp;
                     }
                 }    
             }
