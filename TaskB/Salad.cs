@@ -4,92 +4,86 @@ using System.Text;
 
 namespace TaskB
 {
-    public class Salad
+    public class Salad 
     {
-         double calories;
-         Vegetables.Tomato tomato;
-         Vegetables.Cucumber cucumber;
-         Vegetables.Pepper pepper;
-         Vegetables.Cabbage cabbage;
-         Vegetables.Onion onion;
-        //Агрегация
-        //В конструктор передаётся уже существующий объект
-        public Salad(Vegetables.Tomato tomato,
-        Vegetables.Cucumber cucumber,
-        Vegetables.Pepper pepper,
-        Vegetables.Cabbage cabbage,
-        Vegetables.Onion onion)
+        //Создание массива объектов
+        AbstractClass.Vegetable[] arrayOfVegetables = new AbstractClass.Vegetable[] 
+        {new Vegetables.Tomato(), new Vegetables.Cucumber(), new Vegetables.Pepper(),
+         new Vegetables.Cabbage(),new Vegetables.Onion() };
+
+        //Метод вывода имён овощей
+        public void DisplayNames()
         {
-            this.tomato = tomato;
-            this.cucumber = cucumber;
-            this.pepper = pepper;
-            this.cabbage = cabbage;
-            this.onion = onion;
+            foreach(var vegetable in arrayOfVegetables)
+            {
+                vegetable.DisplayVegetableName();
+            }
+        }
+        //Метод установки веса овоща 
+        public void SetWeight()
+        {
+            foreach (var vegetable in arrayOfVegetables)
+            {
+                //Показ названия овоща
+                vegetable.DisplayVegetableName();
+                //Установка веса
+                vegetable.Weight = int.Parse(Console.ReadLine());
+                //Подсчёт каллорий в соответсвии с весом
+                vegetable.Calories = vegetable.CalorieCounting();
+            }
         }
         //Метод подсчёта каллорий салата 
         public double CalorieCounting()
         {
-            //Calories - это уже расчитанное значение связанное с весом
-            calories = tomato.Calories + cucumber.Calories + pepper.Calories + cabbage.Calories + onion.Calories;
+            double calories = 0;
+            //Calories - это уже расчитанное значение в соответсвии с весом
+            foreach (var vegetable in arrayOfVegetables)
+            calories += vegetable.Calories;
             return calories;
         }
+        
         //Метод сортировки овощей по значению каллорий
-        public AbstractClass.Vegetable[] SortByCalorie()
+        public void SortByCalorie()
         {
-            //Создание массива объектов
-            AbstractClass.Vegetable[] arrayOfVegetables = new AbstractClass.Vegetable[] { tomato, cucumber, pepper, cabbage, onion };
-            AbstractClass.Vegetable temp;
-            //Пузырькова сортировка объектов по значению Calories
-            for (int i = 0; i < arrayOfVegetables.Length - 1; i++)
-            {
-                for(int j = i+1; j < arrayOfVegetables.Length; j++)
-                {
-                    if(arrayOfVegetables[i].Calories > arrayOfVegetables[j].Calories)
-                    {
-                        temp = arrayOfVegetables[i];
-                        arrayOfVegetables[i] = arrayOfVegetables[j];
-                        arrayOfVegetables[j] = temp;
-                    }
-                }    
-            }
-            return arrayOfVegetables;
+            //Вызов метода сортировки Sort() с использованием указанного IComparer
+            Array.Sort(arrayOfVegetables, new CaloriesComparer());   
         }
         //Метод вывода информации об отсортированном по значению каллорий массиве объектов
-        public void OutputSortedVegetables(AbstractClass.Vegetable[] arrayOfVegetables)
+        public void OutputSortedVegetables()
             {
-                foreach (var value in arrayOfVegetables)
+                foreach (var vegetable in arrayOfVegetables)
                 {
-                    Console.Write($"{value.Calories}\t");
+                    Console.Write($"{vegetable.Calories}\t");
                 }
                 Console.WriteLine();
-                foreach (var value in arrayOfVegetables)
+                foreach (var vegetable in arrayOfVegetables)
                 {
-                    Console.Write($"{value.VegetableName}\t");
+                    Console.Write($"{vegetable.VegetableName}\t");
                 }
             }
         //Метод поиска овощей в салате, соответствующих заданному диапазону калорийности
-        public void SearchByCalorieRange(double value1, double value2, AbstractClass.Vegetable[] arrayOfVegetables)
+        public void SearchByCalorieRange(double value1, double value2)
         {
             bool flag = false;
-            foreach(var vegetables in arrayOfVegetables)
+            foreach(var vegetable in arrayOfVegetables)
             {
                 if (value1 >= value2)
                 {
                     //Сравнение значений
-                    if (vegetables.Calories <= value1 && vegetables.Calories >= value2)
+                    if (vegetable.Calories <= value1 && vegetable.Calories >= value2)
                     {
                         //Вывод названий овощей
-                        vegetables.DisplayVegetableName();
+                        vegetable.DisplayVegetableName();
                         flag = true;
                     }    
                 }
                 else
                 {
                     //Сравнение значений
-                    if (vegetables.Calories >= value1 && vegetables.Calories <= value2)
+                    if (vegetable.Calories >= value1 && vegetable.Calories <= value2)
                     {
                         //Вывод названий овощей
-                        vegetables.DisplayVegetableName();
+                        vegetable.DisplayVegetableName();
                         flag = true;
                     }
                 }               
